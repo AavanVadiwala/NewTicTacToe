@@ -1,20 +1,20 @@
 import tkinter as Tk
 from functools import partial
 
-def clear():
+
+def processCommand(command):
     global numOfTurns
     global gameOver
 
-    for row in range(3):
-        for col in range(3):
-            inputGrid[row][col].set('')
-    numOfTurns = 0
-    gameOver = False
-    lblStatus.config(text="Player " + str((numOfTurns % 2) + 1) + " turn", bg="blue")
-
-
-def quit():
-    exit(0)
+    if command == 'new':
+        for row in range(3):
+            for col in range(3):
+                inputGrid[row][col].set('')
+        numOfTurns = 0
+        gameOver = False
+        lblStatus.config(text="Player " + str((numOfTurns % 2) + 1) + " turn", bg="blue")
+    elif command == 'quit':
+        exit(0)
 
 
 def processUserClick(cell):
@@ -101,17 +101,17 @@ for row in range(3):
     btnArray.append(record)
 
 button = Tk.Button(app, width=10, height=3,
-                   command=clear,
+                   command=partial(processCommand, 'new'),
                    text="New Game")
 button.grid(row=3, column=0, columnspan=3, pady=5)
 
 button = Tk.Button(app, width=10, height=3,
-                   command=quit,
+                   command=partial(processCommand, 'quit'),
                    text="Quit Game")
 button.grid(row=3, column=3, columnspan=3, pady=5)
 
 lblStatus = Tk.Label(app, height=3, fg="white", bg="blue")
 lblStatus.grid(row=4, columnspan=6, sticky='NSEW')
-clear()
+processCommand('new')
 
 app.mainloop()
